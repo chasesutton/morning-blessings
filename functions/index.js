@@ -3,10 +3,12 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const axios = require("axios");
 const cors = require("cors")({origin: "http://localhost:3000"});
+require("dotenv").config();
+
 
 admin.initializeApp();
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || functions.config().openai.apikey;
+const OPENAI_API_KEY = functions.config().openai.apikey;
 
 exports.getBotResponse = functions.https.onRequest((req, res) => {
   return cors(req, res, async () => {

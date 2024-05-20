@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { getAuth } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/firebase';
-import Home from '@/views/Home.vue';
+import Home from '@/components/Home.vue'; // Corrected import path
 import UserProfile from '@/components/UserProfile.vue';
 import ChatPage from '@/components/ChatPage.vue'; // Import ChatPage
 import SignUp from '@/components/SignUp.vue'; // Import SignUp
@@ -20,22 +20,9 @@ const routes = [
     component: UserProfile,
     meta: { requiresAuth: true },
   },
-  {
-    path: '/chat',
-    name: 'Chat',
-    component: ChatPage,
-    meta: { requiresAuth: true }, // Assuming chat also requires authentication
-  },
-  {
-    path: '/signup',
-    name: 'SignUp',
-    component: SignUp,
-  },
-  {
-    path: '/signin',
-    name: 'SignIn',
-    component: SignIn,
-  },
+  { path: "/chat", name: "Chat", component: ChatPage },
+  { path: "/signup", name: "SignUp", component: SignUp },
+  { path: "/signin", name: "SignIn", component: SignIn },
 ];
 
 const router = createRouter({
@@ -48,13 +35,13 @@ router.beforeEach(async (to, from, next) => {
   const user = auth.currentUser;
 
   if (to.meta.requiresAuth && !user) {
-    next('/signin');
+    next('/signin'); // Redirect to SignIn instead of login
   } else if (to.meta.requiresRole) {
     const userRoleDoc = await getDoc(doc(db, 'roles', user.uid));
     if (userRoleDoc.exists() && userRoleDoc.data().role === to.meta.requiresRole) {
       next();
     } else {
-      next('/unauthorized');
+      next('/unauthorized'); // Redirect to unauthorized route (should be defined in your routes)
     }
   } else {
     next();
