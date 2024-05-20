@@ -1,7 +1,8 @@
 // src/firebase.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -21,6 +22,13 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Initialize Auth
-const auth = getAuth(app);
+const auth = getAuth();
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    store.commit('setUser', user); // Assuming you use Vuex or Pinia for state management
+  } else {
+    store.commit('setUser', null);
+  }
+});
 
 export { db, auth };

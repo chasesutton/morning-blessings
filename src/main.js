@@ -5,6 +5,7 @@ import { createPinia } from "pinia";
 import router from "./router";
 import vuetify from "./plugins/vuetify"; // Import Vuetify plugin
 import "./plugins/firebase"; // Import Firebase plugin to initialize it
+import './styles/global.scss'; // Import the global styles
 
 const app = createApp(App);
 

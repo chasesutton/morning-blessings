@@ -1,20 +1,24 @@
 <template>
-    <v-btn @click="signOut" color="primary">Sign Out</v-btn>
+    <button @click="signOut">Sign Out</button>
   </template>
   
   <script>
-  import { getAuth, signOut as firebaseSignOut } from "firebase/auth";
+  import { getAuth, signOut } from 'firebase/auth';
   
   export default {
     setup() {
-      const signOut = async () => {
+      const signOutUser = async () => {
         const auth = getAuth();
-        await firebaseSignOut(auth);
+        try {
+          await signOut(auth);
+          alert('Sign Out Successful');
+        } catch (error) {
+          console.error('Sign Out Error:', error);
+          alert('Sign Out Failed');
+        }
       };
   
-      return {
-        signOut,
-      };
+      return { signOut: signOutUser };
     },
   };
   </script>
